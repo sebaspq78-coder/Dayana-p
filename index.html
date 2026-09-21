@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Flores amarillas para Dayana Paredez Paz</title>
+<meta name="description" content="Un jardín nocturno interactivo para el Día de las Flores Amarillas, 21 de septiembre.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Karla:ital,wght@0,300..700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: dark;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+
+    --cielo-0:#04061a;
+    --cielo-1:#0c1136;
+    --cielo-2:#1a1d54;
+    --horizonte:#3a2963;
+    --tierra:#160d2c;
+
+    --sol:#ffd34e;
+    --mantequilla:#ffe59b;
+    --ambar:#f5a623;
+    --miel:#dd8709;
+    --palido:#fff4ce;
+
+    --hoja:#37624f;
+    --hoja-clara:#5f9b7d;
+
+    --papel:#faf1df;
+    --tinta:#3b2e1e;
+
+    --texto:#ece7ff;
+    --suave:#a9a2d0;
+
+    --max: 68ch;
+  }
+  html{ scroll-padding-top: env(safe-area-inset-top, 0px); }
+  *,*::before,*::after{ box-sizing: inherit; }
+
+  body{
+    margin:0;
+    background: linear-gradient(180deg, var(--cielo-0) 0%, var(--cielo-1) 42%, var(--cielo-2) 74%, var(--horizonte) 100%);
+    color: var(--texto);
+    font-family: 'Karla', ui-sans-serif, system-ui, sans-serif;
+    font-size: clamp(16px, 1rem + 0.2vw, 18px);
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  #cielo{ position: fixed; inset:0; width:100%; height:100%; z-index:0; }
+  .luna{
+    position: fixed; z-index:0;
+    top: clamp(24px, 7vh, 80px); right: clamp(18px, 8vw, 120px);
+    width: clamp(54px, 9vw, 104px); aspect-ratio:1; border-radius:50%;
+    background: radial-gradient(circle at 34% 32%, #fffbe9 0%, #ffeeb4 52%, #f4d98d 78%, #e6c374 100%);
+    box-shadow: 0 0 40px 10px rgba(255,231,160,.20), 0 0 130px 40px rgba(255,220,130,.10);
+  }
+  .luna::after{
+    content:""; position:absolute; inset:0; border-radius:50%;
+    background: radial-gradient(circle at 66% 28%, rgba(196,168,105,.30) 0 6%, transparent 7%),
+                radial-gradient(circle at 38% 62%, rgba(196,168,105,.26) 0 9%, transparent 10%),
+                radial-gradient(circle at 60% 70%, rgba(196,168,105,.20) 0 5%, transparent 6%);
+  }
+
+  main, footer{ position: relative; z-index:1; }
+
+  /* ---------- tipografía ---------- */
+  h1,h2,h3,.papel-texto{ font-family:'Fraunces','Iowan Old Style',Georgia,serif; font-optical-sizing:auto; font-weight:400; }
+  h1{
+    margin:0;
+    font-size: clamp(2.3rem, 9.5vw, 4.6rem);
+    line-height: 1.02;
+    letter-spacing:-0.025em;
+    font-weight:300;
+    text-wrap: balance;
+  }
+  h2{ font-size: clamp(1.5rem, 4.4vw, 2.25rem); line-height:1.15; margin:0 0 .6em; letter-spacing:-0.02em; font-weight:400; }
+  p{ margin:0 0 1em; }
+
+  .envoltura{ width:min(100% - 2.4rem, 1080px); margin-inline:auto; }
+
+  /* ---------- portada ---------- */
+  .portada{ padding: clamp(3rem, 11vh, 6.5rem) 0 0; text-align:center; }
+  .fecha{
+    margin:0 0 1.1rem; color: var(--sol); font-size:.95rem; letter-spacing:.04em;
+  }
+  .fecha span{ color: var(--suave); }
+  .fecha span::before{ content:''; display:inline-block; width:18px; height:1px; background: rgba(255,211,78,.6); vertical-align:middle; margin:0 .5rem; }
+  .bajada{
+    max-width: 46ch; margin: 1.4rem auto 0; color: var(--suave);
+    font-size: clamp(1rem, 2.6vw, 1.12rem);
+  }
+  .bajada em{ color: var(--mantequilla); font-style:normal; }
+
+  /* ---------- jardín ---------- */
+  .jardin{ margin-top: clamp(1rem, 3vh, 2rem); }
+  .arbol-caja{
+    position:relative;
+    width:100%;
+    height: clamp(430px, 66svh, 650px);
+    overflow:hidden;
+  }
+  #arbol{ display:block; width:100%; height:100%; }
+
+  .luciernagas{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+  .luciernaga{
+    position:absolute; width:5px; height:5px; border-radius:50%;
+    background: var(--mantequilla);
+    box-shadow:0 0 9px 3px rgba(255,214,104,.55);
+    opacity:0;
+    animation: vuelo linear infinite;
+  }
+  @keyframes vuelo{
+    0%{ transform: translate3d(0,0,0) scale(.6); opacity:0; }
+    12%{ opacity:.9; }
+    50%{ transform: translate3d(34px,-46px,0) scale(1); opacity:.55; }
+    88%{ opacity:.8; }
+    100%{ transform: translate3d(-22px,-96px,0) scale(.5); opacity:0; }
+  }
+
+  .pista{
+    text-align:center; color:var(--suave); font-size:.95rem;
+    margin: .2rem auto 0; max-width:40ch;
+  }
+  .medidor{
+    display:flex; flex-direction:column; align-items:center; gap:.55rem;
+    margin: 1.4rem auto 0; width:min(100%, 320px);
+  }
+  .medidor p{ margin:0; font-size:.9rem; color:var(--suave); }
+  .medidor b{ color:var(--sol); font-weight:600; font-variant-numeric: tabular-nums; }
+  .barra{ width:100%; height:3px; background: rgba(255,255,255,.12); border-radius:99px; overflow:hidden; }
+  .barra i{ display:block; height:100%; width:0%; background: linear-gradient(90deg, var(--miel), var(--sol)); transition: width .5s cubic-bezier(.2,.8,.3,1); }
+  .completado{
+    margin-top:.4rem; font-size:.9rem; color:var(--mantequilla);
+    opacity:0; transform: translateY(6px); transition: opacity .6s, transform .6s;
+  }
+  .completado.visible{ opacity:1; transform:none; }
+
+  /* ---------- flores (svg) ---------- */
+  .flor{ cursor:pointer; }
+  .flor .hit{ fill: transparent; stroke: transparent; stroke-width:1.5; }
+  .flor:focus{ outline:none; }
+  .flor:focus-visible .hit{ stroke: var(--mantequilla); stroke-dasharray:3 3; }
+  .cuerpo{ transform-box: fill-box; transform-origin: center; }
+  .flor .halo{ opacity:.34; transition: opacity .35s ease; }
+  .flor:hover .halo, .flor:focus-visible .halo, .flor.activa .halo{ opacity:.85; }
+  .flor .cuerpo{ transition: transform .35s cubic-bezier(.2,1.4,.4,1); }
+  .flor:hover .cuerpo, .flor:focus-visible .cuerpo{ transform: scale(1.16) rotate(-4deg); }
+  .flor.activa .cuerpo{ transform: scale(1.22); }
+  .flor.vista .centro{ stroke: rgba(255,255,255,.75); stroke-width:.7; }
+  .copa.completo .halo{ opacity:.92; }
+
+  @keyframes florecer{
+    from{ transform: scale(.05) rotate(-40deg); opacity:0; }
+    70%{ opacity:1; }
+    to{ transform: scale(1) rotate(0); opacity:1; }
+  }
+  .brotar{ animation: florecer .9s cubic-bezier(.2,1.25,.35,1) backwards; }
+
+  /* ---------- ficha ---------- */
+  .ficha{
+    position: fixed; z-index:30;
+    left: 50%; bottom: 0; transform: translate(-50%, 110%);
+    width: min(100%, 560px);
+    background: linear-gradient(170deg, rgba(30,26,74,.97), rgba(16,14,44,.98));
+    border: 1px solid rgba(255,214,104,.28);
+    border-bottom:none;
+    border-radius: 20px 20px 0 0;
+    padding: 1.35rem 1.4rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -18px 60px rgba(0,0,0,.55);
+    transition: transform .42s cubic-bezier(.2,.9,.25,1), opacity .3s;
+    opacity:0; visibility:hidden;
+  }
+  .ficha.abierta{ transform: translate(-50%, 0); opacity:1; visibility:visible; }
+  .ficha .tirador{ width:44px; height:4px; border-radius:99px; background: rgba(255,255,255,.22); margin:-.45rem auto .95rem; }
+  .ficha h3{ margin:0; font-size:1.45rem; font-weight:400; color: var(--mantequilla); line-height:1.15; }
+  .ficha .cientifico{ font-style:italic; color: var(--suave); font-size:.9rem; margin:.15rem 0 .9rem; }
+  .ficha dl{ margin:0; display:grid; gap:.7rem; }
+  .ficha dt{ font-size:.78rem; color: var(--sol); letter-spacing:.03em; }
+  .ficha dd{ margin:.1rem 0 0; font-size:.98rem; color:#ded8f5; }
+  .ficha .cerrar{
+    position:absolute; top:.8rem; right:.9rem;
+    background: rgba(255,255,255,.07); color: var(--texto);
+    border:1px solid rgba(255,255,255,.14); border-radius:50%;
+    width:34px; height:34px; font-size:1.1rem; line-height:1; cursor:pointer;
+  }
+  .ficha .cerrar:hover{ background: rgba(255,255,255,.14); }
+  .nueva{
+    display:inline-block; margin-left:.5rem; vertical-align:middle;
+    font-size:.7rem; color: var(--cielo-0); background: var(--sol);
+    border-radius:99px; padding:.1rem .5rem; font-weight:700;
+  }
+  @media (min-width: 900px){
+    .ficha{
+      left:auto; right: 2.2rem; bottom:auto; top:50%;
+      width: 340px; transform: translate(0, -50%) translateX(130%);
+      border-radius: 18px; border-bottom:1px solid rgba(255,214,104,.28);
+      padding:1.5rem 1.5rem 1.6rem;
+    }
+    .ficha.abierta{ transform: translate(0,-50%); }
+    .ficha .tirador{ display:none; }
+  }
+
+  /* ---------- carta ---------- */
+  .carta{ padding: clamp(4rem, 12vh, 8rem) 0 0; text-align:center; }
+  .sobre-escena{ position:relative; display:inline-block; margin: 1.6rem auto 0; }
+  .sobre{
+    position:relative; perspective: 800px; width: min(84vw, 330px); aspect-ratio: 3 / 2;
+    margin-inline:auto;
+    background: linear-gradient(160deg, #f3e3c6, #e2caa0);
+    border-radius:8px;
+    box-shadow: 0 18px 44px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.18) inset;
+    transition: transform .6s ease, opacity .5s ease;
+  }
+  .sobre .solapa{
+    position:absolute; left:0; right:0; top:0; height:58%;
+    background: linear-gradient(170deg, #f7ead3, #dcc094);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top center;
+    transition: transform .7s cubic-bezier(.4,.05,.2,1);
+    border-radius:8px 8px 0 0;
+  }
+  .sobre .sello{
+    position:absolute; left:50%; top:52%; transform: translate(-50%,-50%);
+    width:52px; height:52px; border-radius:50%;
+    background: radial-gradient(circle at 36% 32%, #ffd875, #e39a12 60%, #b26f05);
+    box-shadow:0 4px 14px rgba(0,0,0,.4);
+    display:grid; place-items:center;
+    font-family:'Fraunces',serif; color:#5a3a02; font-size:1.25rem;
+    transition: opacity .35s;
+  }
+  .abierta-carta .sobre .solapa{ transform: rotateX(178deg); }
+  .abierta-carta .sobre .sello{ opacity:0; }
+  .abierta-carta .sobre{ transform: translateY(26px) scale(.9); opacity:.55; }
+
+  .papel{
+    width: min(92vw, 560px);
+    margin: 1.6rem auto 0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,.035), transparent 18%),
+      var(--papel);
+    color: var(--tinta);
+    border-radius: 6px;
+    padding: clamp(1.8rem, 5.5vw, 3rem) clamp(1.4rem, 5vw, 2.8rem);
+    box-shadow: 0 26px 60px rgba(0,0,0,.55);
+    text-align:left;
+    max-height:0; opacity:0; overflow:hidden; padding-top:0; padding-bottom:0;
+    transition: max-height .8s cubic-bezier(.3,.9,.3,1), opacity .5s ease .18s, padding .6s;
+  }
+  .abierta-carta .papel{ max-height: 900px; opacity:1; padding-top: clamp(1.8rem,5.5vw,3rem); padding-bottom: clamp(1.8rem,5.5vw,3rem); }
+  .papel .saludo{ font-family:'Fraunces',serif; font-size:1.35rem; margin:0 0 .9rem; color:#6b4a12; }
+  .papel-texto{
+    font-size: clamp(1.15rem, 3.6vw, 1.5rem);
+    line-height:1.55; font-style:italic; font-weight:300;
+    margin:0 0 1.4rem;
+  }
+  .firma{ font-family:'Fraunces',serif; font-size:1.05rem; color:#6b4a12; margin:0; }
+  .firma small{ display:block; font-family:'Karla',sans-serif; font-style:normal; color:#8a7659; font-size:.78rem; margin-top:.35rem; }
+
+  .btn{
+    margin-top: 2rem;
+    font-family:'Karla',sans-serif; font-size:1rem; font-weight:600;
+    color:#3a2601;
+    background: linear-gradient(160deg, var(--mantequilla), var(--ambar));
+    border:none; border-radius:99px;
+    padding: .95rem 2.1rem;
+    cursor:pointer;
+    box-shadow: 0 10px 30px rgba(245,166,35,.32);
+    transition: transform .22s ease, box-shadow .22s ease;
+  }
+  .btn:hover{ transform: translateY(-2px); box-shadow:0 14px 36px rgba(245,166,35,.45); }
+  .btn:active{ transform: translateY(0); }
+  .btn:focus-visible{ outline:3px solid var(--mantequilla); outline-offset:3px; }
+
+  .lluvia{ position:fixed; inset:0; pointer-events:none; z-index:25; overflow:hidden; }
+  .petalo-cae{
+    position:absolute; top:-24px; width:13px; height:13px; border-radius: 50% 12% 50% 12%;
+    background: linear-gradient(140deg, var(--mantequilla), var(--ambar));
+    opacity:0; animation: caer linear forwards;
+  }
+  @keyframes caer{
+    0%{ transform: translateY(-10vh) rotate(0deg); opacity:0; }
+    12%{ opacity:.95; }
+    100%{ transform: translateY(112vh) rotate(520deg); opacity:0; }
+  }
+
+  footer{
+    text-align:center;
+    padding: clamp(4rem, 11vh, 7rem) 1.5rem calc(3.5rem + env(safe-area-inset-bottom,0px));
+    color: var(--suave);
+  }
+  footer .cierre{
+    font-family:'Fraunces',serif; font-style:italic; font-size:clamp(1.05rem,3.4vw,1.3rem);
+    color: var(--mantequilla); margin:0;
+  }
+  footer .florcita{ display:block; font-size:1.4rem; margin-bottom:.6rem; }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.12s !important; }
+    .luciernaga{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="cielo" aria-hidden="true"></canvas>
+<div class="luna" aria-hidden="true"></div>
+
+<main>
+  <header class="portada envoltura">
+    <p class="fecha">21 de septiembre <span>Día de las Flores Amarillas</span></p>
+    <h1>Flores amarillas<br>para Dayana Paredez Paz &lt;3</h1>
+    <p class="bajada">Aunque nos separen kilómetros, esta noche miramos el mismo cielo. Te dejé <em>un jardín entero</em> para que lo recorras con calma.</p>
+  </header>
+
+  <section class="jardin" aria-labelledby="titulo-jardin">
+    <h2 id="titulo-jardin" class="visualmente-oculto" style="position:absolute;left:-9999px">El jardín nocturno</h2>
+    <div class="arbol-caja">
+      <svg id="arbol" viewBox="0 0 1000 640" preserveAspectRatio="xMidYMax meet" role="img" aria-label="Árbol mágico cubierto de flores amarillas en una noche estrellada"></svg>
+      <div class="luciernagas" id="luciernagas" aria-hidden="true"></div>
+    </div>
+    <div class="envoltura">
+      <p class="pista">Toca cualquier flor del árbol o del pasto para conocerla.</p>
+      <div class="medidor">
+        <p>Especies descubiertas: <b><span id="cuenta">0</span> de <span id="total">16</span></b></p>
+        <div class="barra"><i id="barra"></i></div>
+        <p class="completado" id="completado">Encontraste las 16 flores del jardín. Ahora el árbol brilla entero.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="carta envoltura" aria-labelledby="titulo-carta">
+    <h2 id="titulo-carta">Hay una carta esperándote</h2>
+    <div class="sobre-escena" id="escena">
+      <div class="sobre" aria-hidden="true">
+        <div class="solapa"></div>
+        <div class="sello">D</div>
+      </div>
+      <div class="papel" id="papel" role="region" aria-live="polite" aria-label="Dedicatoria">
+        <p class="saludo">Dayana,</p>
+        <p class="papel-texto">Que estas flores te recuerden lo especial que eres y que, incluso en los días nublados, siempre hay algo hermoso esperando florecer.</p>
+        <p class="firma">Con todo mi cariño, Sebastián
+          <small>21 de septiembre, día de las flores amarillas</small>
+        </p>
+      </div>
+    </div>
+    <div>
+      <button class="btn" id="btnCarta" aria-expanded="false" aria-controls="papel">Abrir dedicatoria</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p class="cierre"><span class="florcita" aria-hidden="true">🌼</span>Hecho con cariño y muchas flores amarillas.</p>
+</footer>
+
+<aside class="ficha" id="ficha" role="region" aria-live="polite" aria-label="Información de la flor">
+  <div class="tirador" aria-hidden="true"></div>
+  <button class="cerrar" id="cerrarFicha" aria-label="Cerrar ficha">×</button>
+  <h3 id="f-nombre">—</h3>
+  <p class="cientifico" id="f-cientifico"></p>
+  <dl>
+    <div><dt>Significado</dt><dd id="f-significado"></dd></div>
+    <div><dt>¿Sabías que…?</dt><dd id="f-dato"></dd></div>
+  </dl>
+</aside>
+
+<div class="lluvia" id="lluvia" aria-hidden="true"></div>
+
+<script>
+(function(){
+  "use strict";
+  const NS = "http://www.w3.org/2000/svg";
+  const menosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------------- azar reproducible ---------------- */
+  function semilla(s){
+    return function(){
+      s |= 0; s = s + 0x6D2B79F5 | 0;
+      let t = Math.imul(s ^ s >>> 15, 1 | s);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  const azar = semilla(20260921);
+  const entre = (a,b) => a + azar()*(b-a);
+
+  /* ---------------- catálogo de flores ---------------- */
+  const ESPECIES = [
+    { id:'girasol', nombre:'Girasol', cientifico:'Helianthus annuus',
+      significado:'Lealtad y admiración: gira su rostro buscando siempre la luz.',
+      dato:'Los girasoles jóvenes siguen al sol de este a oeste y, durante la noche, giran de vuelta para recibir el amanecer.',
+      forma:'punta', petalos:18, color:'#FFC93C', color2:'#F09B12', centro:'#5A3E18', tam:1.25 },
+    { id:'tulipan', nombre:'Tulipán amarillo', cientifico:'Tulipa gesneriana',
+      significado:'Alegría sincera, de la que se nota en la sonrisa.',
+      dato:'En el siglo XVII los bulbos de tulipán se cotizaban tan caro en Holanda que uno solo podía valer lo mismo que una casa.',
+      forma:'copa', petalos:3, color:'#FFD75E', color2:'#EFA00B', centro:'#C97F06', tam:1.15 },
+    { id:'rosa', nombre:'Rosa amarilla', cientifico:'Rosa foetida',
+      significado:'Amistad luminosa y promesas que duran en el tiempo.',
+      dato:'Europa no conocía rosas amarillas hasta que llegaron desde Asia: antes se creía que ese color simplemente no existía en las rosas.',
+      forma:'capas', petalos:9, color:'#FFDE7A', color2:'#F0A81C', centro:'#E29A10', tam:1.1 },
+    { id:'margarita', nombre:'Margarita amarilla', cientifico:'Euryops pectinatus',
+      significado:'Pureza y comienzos nuevos, sin complicarse.',
+      dato:'Lo que parece una sola flor es en realidad un ramo diminuto: decenas de florcitas apretadas en un mismo centro.',
+      forma:'elipse', petalos:13, color:'#FFE066', color2:'#F6C324', centro:'#D98C06', tam:1 },
+    { id:'narciso', nombre:'Narciso', cientifico:'Narcissus pseudonarcissus',
+      significado:'Renacer: es de las primeras en asomar cuando termina el frío.',
+      dato:'Su bulbo puede pasar meses dormido bajo tierra, esperando en silencio el momento exacto para florecer.',
+      forma:'trompeta', petalos:6, color:'#FFF0A8', color2:'#FFD24A', centro:'#F5A623', tam:1.05 },
+    { id:'calendula', nombre:'Caléndula', cientifico:'Calendula officinalis',
+      significado:'Resistencia: florece incluso donde nadie la cuida.',
+      dato:'Sus pétalos se cierran al caer el sol y vuelven a abrirse con la primera luz de la mañana.',
+      forma:'capas', petalos:12, color:'#FFB627', color2:'#F08800', centro:'#8C4B08', tam:1 },
+    { id:'gerbera', nombre:'Gerbera amarilla', cientifico:'Gerbera jamesonii',
+      significado:'Alegría pura, de esas que se contagian sin permiso.',
+      dato:'Es una de las cinco flores de corte más vendidas del mundo, junto a la rosa, el clavel, el tulipán y el crisantemo.',
+      forma:'elipse', petalos:16, color:'#FFD93D', color2:'#F2A80D', centro:'#7A4A10', tam:1.1 },
+    { id:'crisantemo', nombre:'Crisantemo amarillo', cientifico:'Chrysanthemum morifolium',
+      significado:'Larga vida y un cariño que no se apura.',
+      dato:'En Japón es símbolo imperial y tiene su propia fiesta, celebrada desde hace más de mil años.',
+      forma:'capas', petalos:14, color:'#FFE07A', color2:'#EFB315', centro:'#F6D24E', tam:1.05 },
+    { id:'dalia', nombre:'Dalia amarilla', cientifico:'Dahlia pinnata',
+      significado:'Elegancia y un vínculo que se sostiene solo.',
+      dato:'Es la flor nacional de México, y mucho antes de ser ornamental se cultivaba para comer sus tubérculos.',
+      forma:'capas', petalos:11, color:'#FFCF4D', color2:'#E89406', centro:'#FFE9A3', tam:1.15 },
+    { id:'mimosa', nombre:'Mimosa', cientifico:'Acacia dealbata',
+      significado:'Ternura escondida: cada flor es un pequeño sol de terciopelo.',
+      dato:'En Italia se regala cada 8 de marzo como símbolo del día de las mujeres.',
+      forma:'pompon', petalos:7, color:'#FFDD55', color2:'#F3B71E', centro:'#FFE98A', tam:1 },
+    { id:'aromo', nombre:'Aromo', cientifico:'Acacia caven',
+      significado:'El perfume que anuncia la primavera en Chile.',
+      dato:'Florece a fines del invierno y su aroma se siente a varios metros, antes de que alcances a ver el árbol.',
+      forma:'pompon', petalos:9, color:'#F7C948', color2:'#E09A08', centro:'#FFE07A', tam:.95 },
+    { id:'forsitia', nombre:'Forsitia', cientifico:'Forsythia × intermedia',
+      significado:'Anticipación: se atreve a florecer antes de tener hojas.',
+      dato:'Sus ramas se cubren enteras de amarillo cuando el resto del jardín todavía está dormido.',
+      forma:'cruz', petalos:4, color:'#FFDE59', color2:'#F1B000', centro:'#E8A000', tam:.9 },
+    { id:'ranunculo', nombre:'Ranúnculo amarillo', cientifico:'Ranunculus asiaticus',
+      significado:'Encanto y admiración hacia alguien que te deslumbra.',
+      dato:'Sus pétalos son tan finos y tantos que la flor entera parece hecha de papel de seda.',
+      forma:'capas', petalos:10, color:'#FFD966', color2:'#EFA71B', centro:'#F7E2A0', tam:1 },
+    { id:'alstroemeria', nombre:'Alstroemeria amarilla', cientifico:'Alstroemeria aurea',
+      significado:'Amistad y prosperidad; crece silvestre en el sur de Chile.',
+      dato:'Sus pétalos traen rayitas oscuras que funcionan como señales de tránsito para guiar a los insectos hasta el néctar.',
+      forma:'punta', petalos:6, color:'#FFCE4A', color2:'#E98F0C', centro:'#8A5A08', tam:1.05 },
+    { id:'jazmin', nombre:'Jazmín amarillo', cientifico:'Jasminum nudiflorum',
+      significado:'Dulzura que llega sin avisar y se queda.',
+      dato:'Florece en pleno invierno, sobre ramas peladas, como si no le importara el calendario.',
+      forma:'cruz', petalos:6, color:'#FFE68F', color2:'#F5C542', centro:'#E8A61B', tam:.85 },
+    { id:'diente', nombre:'Diente de león', cientifico:'Taraxacum officinale',
+      significado:'Deseos y distancia: sus semillas viajan kilómetros con el viento.',
+      dato:'Una sola esfera puede soltar cerca de 200 semillas, y cada una es capaz de volar varios kilómetros antes de aterrizar.',
+      forma:'plumon', petalos:16, color:'#FFF6D0', color2:'#FFE9A0', centro:'#FFF9E4', tam:1.05 }
+  ];
+  document.getElementById('total').textContent = ESPECIES.length;
+  const porId = {};
+  ESPECIES.forEach(e => porId[e.id] = e);
+
+  /* ---------------- helpers svg ---------------- */
+  function el(t, attrs){
+    const n = document.createElementNS(NS, t);
+    for(const k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  }
+
+  /* ---------------- dibujo de cada flor ---------------- */
+  function petalos(sp){
+    const g = el('g', {});
+    const n = sp.petalos;
+    const grad = 360 / n;
+
+    if(sp.forma === 'pompon'){
+      for(let i=0;i<n;i++){
+        const a = (i*grad) * Math.PI/180;
+        const r = 4.6;
+        g.appendChild(el('circle', { cx:(Math.cos(a)*r).toFixed(2), cy:(Math.sin(a)*r).toFixed(2), r:3.1, fill: i%2 ? sp.color : sp.color2, opacity:.95 }));
+      }
+      g.appendChild(el('circle', { cx:0, cy:0, r:3.4, fill: sp.centro, class:'centro' }));
+      return g;
+    }
+
+    if(sp.forma === 'plumon'){
+      for(let i=0;i<n;i++){
+        const a = (i*grad) * Math.PI/180;
+        const x = Math.cos(a)*10.5, y = Math.sin(a)*10.5;
+        g.appendChild(el('line', { x1:0, y1:0, x2:x.toFixed(2), y2:y.toFixed(2), stroke: sp.color, 'stroke-width':.8, opacity:.85 }));
+        g.appendChild(el('circle', { cx:x.toFixed(2), cy:y.toFixed(2), r:1.5, fill: sp.color2, opacity:.9 }));
+      }
+      g.appendChild(el('circle', { cx:0, cy:0, r:2.2, fill: sp.centro, class:'centro' }));
+      return g;
+    }
+
+    let d;
+    if(sp.forma === 'punta')  d = 'M0,-1 C3.4,-5 3.6,-9.5 0,-13 C-3.6,-9.5 -3.4,-5 0,-1 Z';
+    if(sp.forma === 'copa')   d = 'M0,1 C-5.6,-3 -6,-11.5 0,-14.5 C6,-11.5 5.6,-3 0,1 Z';
+    if(sp.forma === 'cruz')   d = 'M0,-1 C2.2,-4 2.4,-10 0,-13.5 C-2.4,-10 -2.2,-4 0,-1 Z';
+    if(sp.forma === 'trompeta') d = 'M0,-1 C3.8,-4.5 4,-9.5 0,-12.5 C-4,-9.5 -3.8,-4.5 0,-1 Z';
+
+    if(sp.forma === 'capas'){
+      const capas = [{r:1, op:1, col:sp.color2}, {r:.72, op:1, col:sp.color}, {r:.46, op:1, col:sp.color}];
+      capas.forEach((c, idx) => {
+        const sub = el('g', { transform:`scale(${c.r}) rotate(${idx*14})` });
+        for(let i=0;i<n;i++){
+          sub.appendChild(el('ellipse', {
+            cx:0, cy:-7.6, rx:3.6, ry:6.4, fill: c.col, opacity: (idx===0?.95:1),
+            transform:`rotate(${i*grad})`
+          }));
+        }
+        g.appendChild(sub);
+      });
+      g.appendChild(el('circle', { cx:0, cy:0, r:2.6, fill: sp.centro, class:'centro' }));
+      return g;
+    }
+
+    for(let i=0;i<n;i++){
+      const rot = i*grad;
+      if(sp.forma === 'elipse'){
+        g.appendChild(el('ellipse', { cx:0, cy:-8, rx:2.9, ry:7.4, fill: i%2 ? sp.color : sp.color2, transform:`rotate(${rot})` }));
+      } else {
+        g.appendChild(el('path', { d, fill: i%2 ? sp.color : sp.color2, transform:`rotate(${rot})` }));
+      }
+    }
+
+    if(sp.forma === 'trompeta'){
+      g.appendChild(el('circle', { cx:0, cy:0, r:5, fill: sp.centro, opacity:.95 }));
+      g.appendChild(el('circle', { cx:0, cy:0, r:3.1, fill:'#B9700A', opacity:.8 }));
+      g.appendChild(el('circle', { cx:0, cy:0, r:1.5, fill:'#FFEDAE', class:'centro' }));
+      return g;
+    }
+
+    const c = el('circle', { cx:0, cy:0, r: sp.forma==='copa' ? 2 : 3, fill: sp.centro, class:'centro' });
+    g.appendChild(c);
+    if(sp.id === 'girasol'){
+      for(let i=0;i<7;i++){
+        const a = (i*51.4)*Math.PI/180;
+        g.appendChild(el('circle', { cx:(Math.cos(a)*1.7).toFixed(2), cy:(Math.sin(a)*1.7).toFixed(2), r:.62, fill:'#8C6A2E' }));
+      }
+    }
+    return g;
+  }
+
+  let indiceAnim = 0;
+  function crearFlor(sp, x, y, escalaBase, rot){
+    const s = escalaBase * sp.tam;
+    const g = el('g', {
+      class:'flor', transform:`translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${s.toFixed(3)}) rotate(${rot.toFixed(1)})`,
+      tabindex:'0', role:'button', 'aria-label':'Flor: ' + sp.nombre
+    });
+    g.dataset.sp = sp.id;
+    g.appendChild(el('circle', { class:'hit', cx:0, cy:0, r:(23/s).toFixed(1), fill:'transparent' }));
+
+    const cuerpo = el('g', { class:'cuerpo' + (menosMovimiento ? '' : ' brotar') });
+    if(!menosMovimiento) cuerpo.style.animationDelay = (250 + indiceAnim*26) + 'ms';
+    indiceAnim++;
+
+    const halo = el('g', { class:'halo' });
+    halo.appendChild(el('circle', { cx:0, cy:0, r:17, fill:'#FFC63C', opacity:'.13' }));
+    halo.appendChild(el('circle', { cx:0, cy:0, r:12, fill:'#FFD960', opacity:'.18' }));
+    halo.appendChild(el('circle', { cx:0, cy:0, r:7.5, fill:'#FFF0B0', opacity:'.22' }));
+    cuerpo.appendChild(halo);
+    cuerpo.appendChild(petalos(sp));
+    g.appendChild(cuerpo);
+    return g;
+  }
+
+  /* ---------------- árbol ---------------- */
+  const svg = document.getElementById('arbol');
+  const defs = el('defs', {});
+  defs.innerHTML =
+    '<radialGradient id="brillo"><stop offset="0%" stop-color="#FFE79A" stop-opacity=".85"/><stop offset="55%" stop-color="#FFC63C" stop-opacity=".30"/><stop offset="100%" stop-color="#FFB300" stop-opacity="0"/></radialGradient>' +
+    '<radialGradient id="aura"><stop offset="0%" stop-color="#6B4FA8" stop-opacity=".40"/><stop offset="60%" stop-color="#3B2A6B" stop-opacity=".16"/><stop offset="100%" stop-color="#241A48" stop-opacity="0"/></radialGradient>' +
+    '<linearGradient id="corteza" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#241736"/><stop offset="60%" stop-color="#3D2B55"/><stop offset="100%" stop-color="#5B4479"/></linearGradient>' +
+    '<linearGradient id="suelo" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2A1B4A"/><stop offset="100%" stop-color="#120A26"/></linearGradient>';
+  svg.appendChild(defs);
+
+  svg.appendChild(el('ellipse', { cx:500, cy:330, rx:330, ry:270, fill:'url(#aura)' }));
+
+  const copa = el('g', { class:'copa', id:'copa' });
+  svg.appendChild(copa);
+
+  const ramas = [], puntas = [];
+  function crecer(x, y, ang, largo, grosor, prof){
+    const x2 = x + Math.cos(ang)*largo;
+    const y2 = y + Math.sin(ang)*largo;
+    const cx = x + Math.cos(ang - 0.22)*largo*0.55;
+    const cy = y + Math.sin(ang - 0.22)*largo*0.55;
+    ramas.push({ d:`M${x.toFixed(1)} ${y.toFixed(1)} Q${cx.toFixed(1)} ${cy.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`, w:grosor });
+    if(prof <= 1) puntas.push([x2, y2]);
+    if(prof === 0) return;
+    const n = prof > 3 ? 2 : (azar() < 0.38 ? 3 : 2);
+    for(let i=0;i<n;i++){
+      const apertura = 0.46 + azar()*0.42;
+      const dir = i - (n-1)/2;
+      crecer(x2, y2, ang + dir*apertura + (azar()-0.5)*0.2, largo*(0.78 + azar()*0.1), grosor*0.66, prof-1);
+    }
+  }
+  crecer(500, 566, -Math.PI/2, 108, 25, 5);
+
+  ramas.forEach(r => copa.appendChild(el('path', {
+    d:r.d, fill:'none', stroke:'url(#corteza)', 'stroke-width':r.w.toFixed(1), 'stroke-linecap':'round'
+  })));
+
+  // hojas sueltas
+  for(let i=0;i<54;i++){
+    const p = puntas[Math.floor(azar()*puntas.length)];
+    copa.appendChild(el('ellipse', {
+      cx:(p[0]+entre(-14,14)).toFixed(1), cy:(p[1]+entre(-12,12)).toFixed(1),
+      rx:5.6, ry:2.6, fill: azar()<.5 ? '#37624F' : '#2C5142', opacity:.7,
+      transform:`rotate(${entre(-70,70).toFixed(0)} ${p[0].toFixed(1)} ${p[1].toFixed(1)})`
+    }));
+  }
+
+  // flores del árbol: primero una de cada especie, después repetidas
+  const orden = puntas.map((p,i)=>({p, k: azar()})).sort((a,b)=>a.k-b.k).map(o=>o.p);
+  const enArbol = orden.slice(0, Math.min(orden.length, 40));
+  enArbol.forEach((p, i) => {
+    const sp = i < ESPECIES.length ? ESPECIES[i] : ESPECIES[Math.floor(azar()*ESPECIES.length)];
+    const x = Math.min(735, Math.max(265, p[0] + entre(-17,17)));
+    copa.appendChild(crearFlor(sp, x, p[1] + entre(-16,16), entre(.95,1.3), entre(-40,40)));
+  });
+
+  // suelo
+  const suelo = el('g', {});
+  suelo.appendChild(el('path', { d:'M120,640 Q500,528 880,640 Z', fill:'url(#suelo)' }));
+  for(let i=0;i<78;i++){
+    const x = 252 + (498/78)*i + entre(0,6);
+    const base = 585 + Math.abs(x-500)*0.075;
+    suelo.appendChild(el('path', {
+      d:`M${x.toFixed(1)} ${base.toFixed(1)} q${entre(-5,5).toFixed(1)} -${entre(9,20).toFixed(1)} ${entre(-8,8).toFixed(1)} -${entre(14,26).toFixed(1)}`,
+      stroke: azar()<.5 ? '#2F5D4C' : '#25493C', 'stroke-width':1.5, fill:'none', 'stroke-linecap':'round', opacity:.8
+    }));
+  }
+  svg.appendChild(suelo);
+
+  // flores del pasto, con tallo
+  const pasto = el('g', {});
+  const usadas = ESPECIES.slice().sort(()=>azar()-.5);
+  const paso = (728-272)/18;
+  for(let i=0;i<18;i++){
+    const x = 272 + paso*i + entre(6, paso-6);
+    const base = 592 + Math.abs(x-500)*0.07;
+    const alto = entre(40, 88);
+    const y = base - alto;
+    pasto.appendChild(el('path', {
+      d:`M${x.toFixed(1)} ${base.toFixed(1)} q${entre(-7,7).toFixed(1)} -${(alto*0.55).toFixed(1)} ${entre(-4,4).toFixed(1)} -${alto.toFixed(1)}`,
+      stroke:'#3B6B57', 'stroke-width':1.8, fill:'none', 'stroke-linecap':'round'
+    }));
+    const sp = usadas[i % usadas.length];
+    pasto.appendChild(crearFlor(sp, x, y, entre(1.1,1.5), entre(-20,20)));
+  }
+  svg.appendChild(pasto);
+
+  /* ---------------- encuadre adaptable ---------------- */
+  const cajaArbol = svg.parentElement;
+  function encuadrar(){
+    const w = cajaArbol.clientWidth, h = cajaArbol.clientHeight;
+    if(!w || !h) return;
+    let vbW = 640 * (w / h);
+    vbW = Math.max(490, Math.min(1000, vbW));
+    svg.setAttribute('viewBox', (500 - vbW/2).toFixed(1) + ' 0 ' + vbW.toFixed(1) + ' 640');
+  }
+  encuadrar();
+
+  /* ---------------- interacción de las flores ---------------- */
+  const ficha = document.getElementById('ficha');
+  const fNombre = document.getElementById('f-nombre');
+  const fCien = document.getElementById('f-cientifico');
+  const fSig = document.getElementById('f-significado');
+  const fDato = document.getElementById('f-dato');
+  const cuenta = document.getElementById('cuenta');
+  const barra = document.getElementById('barra');
+  const completado = document.getElementById('completado');
+  const descubiertas = new Set();
+  let activa = null;
+
+  function mostrar(sp, nodo){
+    if(activa) activa.classList.remove('activa');
+    activa = nodo; nodo.classList.add('activa');
+    nodo.classList.add('vista');
+
+    const esNueva = !descubiertas.has(sp.id);
+    if(esNueva){
+      descubiertas.add(sp.id);
+      cuenta.textContent = descubiertas.size;
+      barra.style.width = (descubiertas.size / ESPECIES.length * 100) + '%';
+      if(descubiertas.size === ESPECIES.length){
+        completado.classList.add('visible');
+        document.getElementById('copa').classList.add('completo');
+      }
+    }
+    fNombre.innerHTML = sp.nombre + (esNueva ? ' <span class="nueva">nueva</span>' : '');
+    fCien.textContent = sp.cientifico;
+    fSig.textContent = sp.significado;
+    fDato.textContent = sp.dato;
+    ficha.classList.add('abierta');
+  }
+  function cerrar(){
+    ficha.classList.remove('abierta');
+    if(activa){ activa.classList.remove('activa'); activa = null; }
+  }
+
+  svg.addEventListener('click', e => {
+    const nodo = e.target.closest('.flor');
+    if(!nodo) return;
+    mostrar(porId[nodo.dataset.sp], nodo);
+  });
+  svg.addEventListener('keydown', e => {
+    if(e.key !== 'Enter' && e.key !== ' ') return;
+    const nodo = e.target.closest ? e.target.closest('.flor') : null;
+    if(!nodo) return;
+    e.preventDefault();
+    mostrar(porId[nodo.dataset.sp], nodo);
+  });
+  document.getElementById('cerrarFicha').addEventListener('click', cerrar);
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') cerrar(); });
+  document.addEventListener('click', e => {
+    if(!ficha.classList.contains('abierta')) return;
+    if(e.target.closest('#ficha') || e.target.closest('.flor')) return;
+    cerrar();
+  });
+
+  /* ---------------- cielo estrellado ---------------- */
+  const lienzo = document.getElementById('cielo');
+  const ctx = lienzo.getContext('2d');
+  let estrellas = [], fugaz = null, proximaFugaz = 3000, W = 0, H = 0;
+
+  function medir(){
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = lienzo.clientWidth; H = lienzo.clientHeight;
+    lienzo.width = Math.round(W * dpr);
+    lienzo.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if(estrellas.length) return;           // posiciones normalizadas: no hace falta rehacerlas
+    const total = Math.round(Math.min(340, Math.max(150, (W * H) / 3400)));
+    for(let i=0;i<total;i++){
+      estrellas.push({
+        x: Math.random(), y: Math.random()*0.94,
+        r: Math.random()*1.25 + 0.35,
+        base: Math.random()*0.5 + 0.28,
+        amp: Math.random()*0.4,
+        vel: Math.random()*0.0016 + 0.0005,
+        fase: Math.random()*Math.PI*2,
+        calida: Math.random() < 0.22
+      });
+    }
+  }
+
+  function pintar(t){
+    ctx.clearRect(0,0,W,H);
+    for(const s of estrellas){
+      const a = menosMovimiento ? s.base + s.amp*0.5 : s.base + s.amp*Math.sin(t*s.vel + s.fase);
+      ctx.globalAlpha = Math.max(0.05, a);
+      ctx.fillStyle = s.calida ? '#ffe9b0' : '#eef1ff';
+      ctx.beginPath(); ctx.arc(s.x*W, s.y*H, s.r, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    if(!menosMovimiento){
+      if(!fugaz && t > proximaFugaz){
+        fugaz = { x: Math.random()*W*0.7, y: Math.random()*H*0.35, vida: 0, largo: 120 + Math.random()*90 };
+      }
+      if(fugaz){
+        fugaz.vida += 0.018;
+        const p = fugaz.vida;
+        const x = fugaz.x + p*260, y = fugaz.y + p*130;
+        const g = ctx.createLinearGradient(x, y, x - fugaz.largo*0.5, y - fugaz.largo*0.25);
+        g.addColorStop(0, 'rgba(255,245,210,' + Math.max(0, 0.9 - p) + ')');
+        g.addColorStop(1, 'rgba(255,245,210,0)');
+        ctx.strokeStyle = g; ctx.lineWidth = 1.8; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - fugaz.largo*0.5, y - fugaz.largo*0.25); ctx.stroke();
+        if(p > 1){ fugaz = null; proximaFugaz = t + 7000 + Math.random()*9000; }
+      }
+    }
+    requestAnimationFrame(pintar);
+  }
+
+  medir();
+  window.addEventListener('resize', () => {
+    clearTimeout(window.__rz);
+    window.__rz = setTimeout(() => { medir(); encuadrar(); }, 150);
+  });
+  requestAnimationFrame(pintar);
+
+  /* ---------------- luciérnagas ---------------- */
+  if(!menosMovimiento){
+    const caja = document.getElementById('luciernagas');
+    for(let i=0;i<14;i++){
+      const l = document.createElement('div');
+      l.className = 'luciernaga';
+      l.style.left = (8 + Math.random()*84) + '%';
+      l.style.top = (35 + Math.random()*58) + '%';
+      l.style.animationDuration = (9 + Math.random()*9) + 's';
+      l.style.animationDelay = (Math.random()*10) + 's';
+      caja.appendChild(l);
+    }
+  }
+
+  /* ---------------- carta ---------------- */
+  const btn = document.getElementById('btnCarta');
+  const escena = document.getElementById('escena');
+  const lluvia = document.getElementById('lluvia');
+  let abierta = false;
+
+  function petalosCayendo(){
+    if(menosMovimiento) return;
+    for(let i=0;i<22;i++){
+      const p = document.createElement('div');
+      p.className = 'petalo-cae';
+      p.style.left = (Math.random()*100) + 'vw';
+      p.style.animationDuration = (5.5 + Math.random()*4.5) + 's';
+      p.style.animationDelay = (Math.random()*2.2) + 's';
+      p.style.transform = 'scale(' + (0.6 + Math.random()*0.8) + ')';
+      lluvia.appendChild(p);
+      setTimeout(() => p.remove(), 13000);
+    }
+  }
+
+  btn.addEventListener('click', () => {
+    abierta = !abierta;
+    escena.classList.toggle('abierta-carta', abierta);
+    btn.textContent = abierta ? 'Cerrar dedicatoria' : 'Abrir dedicatoria';
+    btn.setAttribute('aria-expanded', String(abierta));
+    if(abierta){
+      petalosCayendo();
+      setTimeout(() => {
+        document.getElementById('papel').scrollIntoView({ behavior: menosMovimiento ? 'auto' : 'smooth', block:'center' });
+      }, 260);
+    }
+  });
+})();
+</script>
+</body>
+</html>
